@@ -1,0 +1,25 @@
+## About
+I wasn't satisfied with any of the methods for automatically signing puppet certificates I found, so I wrote a little rest service that would do a base level of authentication (shared password) and submit a system to be signed. This contains a second script which runs every minute out of cron to sign authenticated certificates.
+
+## Contents
+bottle.py - courtesy of http://bottlepy.org/docs/dev/! used by register.wsgi
+dbc.py - database class, used by register.wsgi and sign_certs.py
+puppetreg.conf - reference apache wsgi puppetreg service config
+puppetreg.sql - schema for DB
+register.wsgi - restful json service for authorizing systems submitted for signing to puppet, and presenting general status of signing
+sign_certs.py - script to run as cron, signs authorized puppet certs
+wsgi.conf - reference update for generic wsgi config
+
+## Installation
+
+1. install mysql server and create database, something like: mysqladmin create puppetreg; mysql puppetreg < puppetreg.sql
+2. install apache, wsgi, and python json,mysql support - on RHEL6: yum -y install httpd mod_ssl mod_wsgi MySQL-python
+3. configure wsgi service and put bottle.py, dbc.py, register.wsgi, and sign_certs.py under the same directory
+4. configure:
+ - dbc.py: db information
+ - register.wsgi: sharedpass, domainname, vpcprefix
+5. add a cron job running sign_certs.py every minute
+6. test it with something like: 
+export NODE=`uname -n`; curl -H "Accept: application/json" -X POST -d '{"pass": "sharedpass", "node": "'${NODE}'"}' http://puppet/puppetreg/submit
+
+That should be it!
