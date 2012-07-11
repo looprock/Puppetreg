@@ -6,8 +6,8 @@ import hashlib
 import re
 
 # service run under apache + wsgi, called like:
-export NODE=`uname -n`
-curl -H "Accept: application/json" -X POST -d '{"pass": "sharedpass", "node": "'${NODE}'"}' http://puppet/puppetreg/submit
+# export NODE=`uname -n`
+# curl -H "Accept: application/json" -X POST -d '{"pass": "sharedpass", "node": "'${NODE}'"}' http://puppet/puppetreg/submit
 
 # set your shared password here. Clients will use this to verify they're OK to add
 sharedpass = 'sharedpass'
