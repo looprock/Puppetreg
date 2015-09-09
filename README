@@ -25,3 +25,4 @@ export NODE=`uname -n`; curl -H "Accept: application/json" -X POST -d '{"pass": 
 That should be it!
 
 NOTE: I would HIGHLY recommend putting the restful service behind SSL so no one can snoop your shared secret!
+
